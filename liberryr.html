@@ -1,0 +1,170 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>লাইব্রেরি সার্চ সিস্টেম</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .search-container {
+      margin-bottom: 20px;
+      width: 80%;
+      max-width: 600px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+    }
+
+    .library {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      width: 80%;
+      max-width: 800px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      text-align: center;
+      width: 220px;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      margin: 10px 0;
+      font-size: 18px;
+    }
+
+    .card p {
+      margin: 5px 0;
+      font-size: 14px;
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #ff7e5f;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    .card a:hover {
+      color: #feb47b;
+    }
+  </style>
+</head>
+<body>
+  <h1>লাইব্রেরি</h1>
+  <div class="search-container">
+    <input type="text" id="searchBar" placeholder="নাম, লেখক বা বিষয় দিয়ে খুঁজুন...">
+  </div>
+  <div class="library" id="library">
+    <!-- কার্ডগুলো ডায়নামিক্যালি জেনারেট হবে -->
+  </div>
+
+  <script>
+    // লাইব্রেরি ডেটা
+    const libraryItems = [
+      { 
+        book: 'পথের পাঁচালী', 
+        author: 'বিভূতিভূষণ বন্দ্যোপাধ্যায়', 
+        genre: 'উপন্যাস', 
+        image: 'https://via.placeholder.com/100', 
+        link: 'https://example.com/pother-panchali' 
+      },
+      { 
+        book: 'গীতাঞ্জলি', 
+        author: 'রবীন্দ্রনাথ ঠাকুর', 
+        genre: 'কবিতা', 
+        image: 'https://via.placeholder.com/100', 
+        link: 'https://example.com/geetanjali' 
+      },
+      { 
+        book: 'দেবদাস', 
+        author: 'শরৎচন্দ্র চট্টোপাধ্যায়', 
+        genre: 'উপন্যাস', 
+        image: 'https://via.placeholder.com/100', 
+        link: 'https://example.com/devdas' 
+      },
+      { 
+        book: 'অপরিচিতা', 
+        author: 'রবীন্দ্রনাথ ঠাকুর', 
+        genre: 'ছোটগল্প', 
+        image: 'https://via.placeholder.com/100', 
+        link: 'https://example.com/aporichita' 
+      }
+    ];
+
+    const library = document.getElementById('library');
+    const searchBar = document.getElementById('searchBar');
+
+    // ডেটা প্রদর্শনের ফাংশন
+    function displayItems(items) {
+      library.innerHTML = '';
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <img src="${item.image}" alt="${item.book}">
+          <h3>${item.book}</h3>
+          <p><strong>লেখক:</strong> ${item.author}</p>
+          <p><strong>বিষয়:</strong> ${item.genre}</p>
+          <a href="${item.link}" target="_blank">বিস্তারিত দেখুন</a>
+        `;
+        library.appendChild(card);
+      });
+    }
+
+    // শুরুতে সব দেখানো
+    displayItems(libraryItems);
+
+    // সার্চ ফাংশনালিটি
+    searchBar.addEventListener('input', () => {
+      const searchText = searchBar.value.toLowerCase();
+      const filteredItems = libraryItems.filter(item => 
+        item.book.toLowerCase().includes(searchText) ||
+        item.author.toLowerCase().includes(searchText) ||
+        item.genre.toLowerCase().includes(searchText)
+      );
+      displayItems(filteredItems);
+    });
+  </script>
+</body>
+</html>
