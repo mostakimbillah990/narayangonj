@@ -1,0 +1,88 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Developer Information Card</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #3a1c71, #d76d77, #ffaf7b);
+      color: #fff;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .profile img {
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      border: 4px solid #fff;
+    }
+
+    .info h2 {
+      margin: 15px 0 5px;
+      font-size: 24px;
+    }
+
+    .info p {
+      margin: 5px 0;
+      font-size: 16px;
+    }
+
+    .contact-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #ff7e5f;
+      border: none;
+      border-radius: 50px;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-decoration: none;
+    }
+
+    .contact-btn:hover {
+      background: #feb47b;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="profile">
+      <img src="https://firebasestorage.googleapis.com/v0/b/smm-penel-be4bc.appspot.com/o/image%2F1000028833.jpg?alt=media&token=fc51cc0b-64a9-4dcb-9de2-99a9e7398045" alt="Developer Photo">
+    </div>
+    <div class="info">
+      <h2>MOSTAKIM</h2>
+      <p>Web Developer | JavaScript Enthusiast</p>
+      <p><strong>Skills:</strong> HTML, CSS, JavaScript, React, Node.js</p>
+      <p><strong>Location:</strong> Dhaka, Bangladesh</p>
+      <a href="https://www.facebook.com/mostakimbillah2000" target="_blank" class="contact-btn">Contact Me</a>
+    </div>
+  </div>
+</body>
+</html>
