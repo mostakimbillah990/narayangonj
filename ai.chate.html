@@ -1,0 +1,144 @@
+
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>চ্যাট বক্স</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+        .chat-container {
+            background: #fff;
+            width: 90%;
+            max-width: 400px;
+            height: 70%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            background: #4facfe;
+            color: #fff;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            background: #f9f9f9;
+        }
+        .chat-messages .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .chat-messages .user-message {
+            background: #4facfe;
+            color: #fff;
+            margin-left: auto;
+            text-align: right;
+        }
+        .chat-messages .bot-message {
+            background: #e0e0e0;
+            color: #333;
+        }
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            background: #fff;
+        }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .chat-input button {
+            background: #4facfe;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .chat-input button:hover {
+            background: #3a9de0;
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">v.1.1</div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="আপনার বার্তা লিখুন..." />
+            <button onclick="sendMessage()">পাঠান</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const userInput = document.getElementById('userInput');
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            if (message === '') return;
+
+            // ব্যবহারকারীর বার্তা দেখান
+            const userMessageDiv = document.createElement('div');
+            userMessageDiv.className = 'message user-message';
+            userMessageDiv.textContent = message;
+            chatMessages.appendChild(userMessageDiv);
+
+            // স্ক্রল নিচে নিয়ে যান
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // ইনপুট ক্লিয়ার করুন
+            userInput.value = '';
+
+            // বটের উত্তর দেখান
+            setTimeout(() => {
+                const botMessageDiv = document.createElement('div');
+                botMessageDiv.className = 'message bot-message';
+                botMessageDiv.textContent = getBotResponse(message);
+                chatMessages.appendChild(botMessageDiv);
+
+                // স্ক্রল নিচে নিয়ে যান
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 500);
+        }
+
+        function getBotResponse(userMessage) {
+            // বটের উত্তর
+            const responses = {
+                'হ্যালো': 'হ্যালো! আপনাকে কিভাবে সাহায্য করতে পারি?',
+                'কেমন আছো': 'আমি ভালো আছি! আপনি কেমন আছেন?',
+                'ধন্যবাদ': 'স্বাগতম!',
+                'বিদায়': 'বিদায়! ভালো থাকবেন।',
+            };
+            return responses[userMessage.toLowerCase()] || 'আপনার জানতে চাওয়া বিষয় সম্পর্কে আমি অবগত নই, দয়া করে এডমিনের সাথে কথা বোলেন। অ্যাডমিন নাম্বার :- 01602528942';
+        }
+    </script>
+</body>
+  </html>
