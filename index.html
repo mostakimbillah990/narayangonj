@@ -1,0 +1,365 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slider with Buttons</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: white;
+      color: black;
+      font-family: Arial, sans-serif;
+      margin: auto;
+      padding: 0;
+      box-sizing: border-box;
+      
+    }
+    
+    /* সাইডবার স্টাইল */
+    .sidebar {
+      height: 100%;
+      width: 0;
+      position: fixed;
+      z-index: 1;
+      top: 0;
+      left: 0;
+      background-color: #111;
+      overflow-x: hidden;
+      transition: 0.5s;
+      padding-top: 60px;
+      color: white;
+      
+    }
+
+    .sidebar a {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      font-size: 25px;
+      color: white;
+      display: block;
+      transition: 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #575757;
+    }
+
+    .sidebar .closebtn {
+      position: absolute;
+      top: 0;
+      right: 25px;
+      font-size: 36px;
+      margin-left: 50px;
+    }
+
+    .menu {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      padding: 0 20px;
+    }
+
+    .menu-icon {
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .header {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      max-width: 600px;
+      margin: auto;
+      overflow: hidden;
+      border: 2px solid #ccc;
+      border-radius: 10px;
+    }
+
+    .slides {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      flex-shrink: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    button {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+      border-radius: 50%;
+    }
+
+    button.prev {
+      left: 10px;
+    }
+
+    button.next {
+      right: 10px;
+    }
+
+    button:hover {
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .buttons-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 20px;
+      gap: 10px;
+      color: red;
+    }
+
+    .button {
+      width: 22%;
+      text-align: center;
+      border: 2px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .button img {
+      width: 100%;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .button span {
+      display: block;
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    
+    
+    .search-container {
+    margin: 20px auto;
+    width: 50%;
+    text-align: center;
+    }
+    
+    .search-bar {
+    width: 80%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    
+
+  </style>
+</head>
+<body>
+<div style= "text-align: center; ">
+  <div id="mySidebar" class="sidebar">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+     <a href="aps.guide.html">Apss Guide</a>
+    <a href="contuct.html">Contact</a>
+    <a href="developer.html">Developer</a>
+    <a href="library.html">Library</a>
+    <a href="ai.chate.html">Ai Chate</a>
+    <!-- Add more pages as needed -->
+  </div>
+
+  <div class="menu">
+    <span class="menu-icon" onclick="openNav()">&#9776;</span>
+  </div>
+
+  <h1 class="header">NARAYANGONJ CITY</h1>
+
+  <div class="slider">
+    <div class="slides">
+      <div class="slide">
+        <img src="benar.png" alt="Image 1">
+      </div>
+      <div class="slide">
+        <img src="benar.png" alt="Image 2">
+      </div>
+      <div class="slide">
+        <img src="benar.png" alt="Image 3">
+      </div>
+    </div>
+    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+  </div>
+  
+  <div class="search-container">
+  <input type="text" id="searchInput" class="search-bar" onkeyup="filterButtons()" placeholder="Search for services...">
+  </div>
+
+  <div class="buttons-container">
+    <!-- ২৪টি বাটন -->
+   <div class="button" onclick="location.href='page1.html'">
+      <img src="doctor.png" alt="Button Image 1">
+      <span> ডাক্তার </span>
+    </div>
+    <div class="button" onclick="location.href='page2.html'">
+      <img src="hospital.jpeg" alt="Button Image 2">
+      <span>হাসপাতাল</span>
+    </div>
+    <div class="button" onclick="location.href='page3.html'">
+      <img src="buss.jpeg" alt="Button Image 3">
+      <span>বাসের সময়সূচি </span>
+    </div>
+    <div class="button" onclick="location.href='page4.html'">
+      <img src="trein.jpeg" alt="##">
+      <span>ট্রেইনের সময়সূচি</span>
+    </div>
+    <div class="button" onclick="location.href='page5.html'">
+      <img src="fair.png">
+      <span>ফায়ার সার্ভিস</span>
+    </div>
+    <div class="button" onclick="location.href='page6.html'">
+      <img src="curiar.jpeg">
+      <span>কুড়িয়ার সার্ভিস</span>
+    </div>
+    <div class="button" onclick="location.href='page7.html'">
+      <img src="policy.jpeg" alt="Button Image 7">
+      <span>পুলিশ স্টেশন</span>
+    </div>
+    <div class="button" onclick="location.href='page8.html'">
+      <img src="electricity.jpeg" alt="Button Image 8">
+      <span>বিদ্যুৎ অফিস</span>
+    </div>
+    <div class="button" onclick="location.href='page9.html'">
+      <img src="blood.png" alt="Button Image 9">
+      <span>রক্ত</span>
+    </div>
+    <div class="button" onclick="location.href='page10.html'">
+      <img src="tour.jpeg" alt="Button Image 10">
+      <span>দর্শনীয় ইস্থান</span>
+    </div>
+    <div class="button" onclick="location.href='page11.html'">
+      <img src="toolet.png" alt="Button Image 11">
+      <span>বাসা ভাড়া</span>
+    </div>
+    <div class="button" onclick="location.href='page12.html'">
+      <img src="shopingmol.jpeg" alt="Button Image 12">
+      <span>শপিং মল</span>
+    </div>
+    <div class="button" onclick="location.href='page13.html'">
+      <img src="hotel.jpeg" alt="Button Image 13">
+      <span>হোটেল</span>
+    </div>
+    <div class="button" onclick="location.href='page14.html'">
+      <img src="carlrt.jpeg" alt="Button Image 14">
+      <span>গাড়ি ভাড়া</span>
+    </div>
+    <div class="button" onclick="location.href='page15.html'">
+      <img src="mistri.jpeg" alt="Button Image 15">
+      <span>মিস্ত্রি</span>
+    </div>
+    <div class="button" onclick="location.href='page16.html'">
+      <img src="urjent.jpeg" alt="Button Image 16">
+      <span>জরুরি সেবা</span>
+    </div>
+    <div class="button" onclick="location.href='page17.html'">
+      <img src="job.png" alt="Button Image 17">
+      <span>চাকরি</span>
+    </div>
+    <div class="button" onclick="location.href='page18.html'">
+      <img src="uddokta.jpeg" alt="Button Image 18">
+      <span>উদ্যোক্তা</span>
+    </div>
+    <div class="button" onclick="location.href='page19.html'">
+      <img src="schull.jpeg" alt="Button Image 19">
+      <span>শিক্ষা প্রতিষ্ঠান</span>
+    </div>
+    <div class="button" onclick="location.href='page20.html'">
+      <img src="news.jpeg" alt="Button Image 20">
+      <span>নিউস</span>
+    </div>
+    <div class="button" onclick="location.href='page21.html'">
+      <img src="mosjid.jpeg" alt="Button Image 21">
+      <span>মসজিদ</span>
+    </div>
+    <div class="button" onclick="location.href='page22.html'">
+      <img src="river.jpeg" alt="Button Image 22">
+      <span>জন প্রতিনিধি</span>
+    </div>
+    <div class="button" onclick="location.href='page23.html'">
+      <img src="proparty.jpeg" alt="Button Image 23">
+      <span>ফ্লাট ক্রয় বিক্রয়</span>
+    </div>
+    <div class="button" onclick="location.href='page24.html'">
+      <img src="program.png" alt="Button Image 24">
+      <span>প্রোগ্রাম</span>
+    </div>
+  </div>
+</div>
+  <script>
+    let currentSlide = 0;
+
+    function moveSlide(direction) {
+      const slides = document.querySelector('.slides');
+      const totalSlides = slides.children.length;
+
+      currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+
+      const slideWidth = slides.children[0].clientWidth;
+      slides.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+    }
+
+    function openNav() {
+      document.getElementById("mySidebar").style.width = "250px";
+    }
+
+    function closeNav() {
+      document.getElementById("mySidebar").style.width = "0";
+    }
+    
+    function filterButtons() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const buttons = document.querySelectorAll('.button');
+    
+    buttons.forEach(button => {
+    const buttonText = button.querySelector('span').textContent.toLowerCase();
+    if (buttonText.indexOf(searchInput) > -1) {
+    button.style.display = '';
+    } else {
+    button.style.display = 'none';
+    }
+    });
+    }
+  </script>
+</body>
+</html>
