@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Profiles</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .search-bar {
+            margin: 20px auto;
+            display: flex;
+            justify-content: center;
+        }
+        .search-bar input {
+            width: 60%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        .profile-card {
+            width: 300px;
+            height: 350px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+        }
+        .profile-img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+        .profile-content h3 {
+            margin: 10px 0 5px;
+            font-size: 18px;
+            color: #333;
+        }
+        .profile-content p {
+            margin: 5px 0;
+            color: #555;
+            font-size: 14px;
+        }
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: none;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            width: 400px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            position: relative;
+        }
+        .modal-content img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .modal-content h3 {
+            margin: 15px 0 5px;
+        }
+        .modal-content p {
+            margin: 5px 0;
+        }
+        .modal-content a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: #28a745;
+            font-size: 16px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .modal-content a:hover {
+            color: #1e7e34;
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            color: #333;
+            cursor: pointer;
+        }
+        .modal-close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <h1>Doctor Profiles</h1>
+    <div class="search-bar">
+        <input type="text" id="search-input" placeholder="Search by name, address, or experience">
+    </div>
+    <div class="container" id="profile-container">
+        <!-- Profiles will be dynamically loaded -->
+    </div>
+
+    <div class="modal" id="profile-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="close-modal">&times;</span>
+            <img id="modal-img" src="" alt="Profile Image">
+            <h3 id="modal-name"></h3>
+            <p id="modal-address"></p>
+            <p id="modal-experience"></p>
+            <a href="#" id="modal-phone">
+                📞 Call
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const profiles = [
+            { name: "Dr. Mohammad Rahim", phone: "+8801712345678", address: "Dhaka, Bangladesh", experience: "10 years", img: "https://via.placeholder.com/300x150" },
+            { name: "Dr. Fatima Akter", phone: "+8801812345678", address: "Chittagong, Bangladesh", experience: "8 years", img: "https://via.placeholder.com/300x150" },
+            { name: "Dr. Khalid Hasan", phone: "+8801912345678", address: "Sylhet, Bangladesh", experience: "12 years", img: "https://via.placeholder.com/300x150" },
+            { name: "Dr. Nusrat Jahan", phone: "+8801612345678", address: "Rajshahi, Bangladesh", experience: "5 years", img: "https://via.placeholder.com/300x150" },
+            { name: "Dr. Rehana Sultana", phone: "+8801512345678", address: "Barishal, Bangladesh", experience: "15 years", img: "https://via.placeholder.com/300x150" }
+        ];
+
+        const container = document.getElementById('profile-container');
+        const searchInput = document.getElementById('search-input');
+        const modal = document.getElementById('profile-modal');
+        const modalImg = document.getElementById('modal-img');
+        const modalName = document.getElementById('modal-name');
+        const modalPhone = document.getElementById('modal-phone');
+        const modalAddress = document.getElementById('modal-address');
+        const modalExperience = document.getElementById('modal-experience');
+        const closeModal = document.getElementById('close-modal');
+
+        // Load profiles
+        function loadProfiles(profiles) {
+            container.innerHTML = '';
+            profiles.forEach(profile => {
+                const card = document.createElement('div');
+                card.classList.add('profile-card');
+                card.innerHTML = `
+                    <img src="${profile.img}" alt="Doctor Image" class="profile-img">
+                    <div class="profile-content">
+                        <h3>${profile.name}</h3>
+                        <p>${profile.address}</p>
+                        <p>${profile.experience}</p>
+                    </div>
+                `;
+                card.addEventListener('click', () => openModal(profile));
+                container.appendChild(card);
+            });
+        }
+
+        // Open modal
+        function openModal(profile) {
+            modal.style.display = 'flex';
+            modalImg.src = profile.img;
+            modalName.textContent = profile.name;
+            modalPhone.href = `tel:${profile.phone}`;
+            modalPhone.textContent = `📞 ${profile.phone}`;
+            modalAddress.textContent = profile.address;
+            modalExperience.textContent = profile.experience;
+        }
+
+        // Close modal
+        closeModal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+
+        // Search profiles
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const filteredProfiles = profiles.filter(profile =>
+                profile.name.toLowerCase().includes(query) ||
+                profile.address.toLowerCase().includes(query) ||
+                profile.experience.toLowerCase().includes(query)
+            );
+            loadProfiles(filteredProfiles);
+        });
+
+        // Initial load
+        loadProfiles(profiles);
+    </script>
+</body>
+          </html>
