@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Schedule</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f7fc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        header {
+            background-color: #007bff;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .menu-icon {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: white;
+        }
+        .search-bar {
+            margin: 20px 0;
+            display: flex;
+            justify-content: center;
+        }
+        .search-bar input {
+            width: 70%;
+            padding: 12px;
+            font-size: 16px;
+            border: 2px solid #007bff;
+            border-radius: 25px;
+            outline: none;
+        }
+        .search-bar input:focus {
+            border-color: #0056b3;
+        }
+        .sidebar {
+            width: 240px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: -240px;
+            background-color: #333;
+            color: #fff;
+            overflow-y: auto;
+            transition: transform 0.3s ease;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar.open {
+            transform: translateX(230px);
+        }
+        .sidebar h3 {
+            text-align: center;
+            padding: 10px 0;
+            background-color: #007bff;
+            margin: 0;
+            font-size: 20px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .sidebar ul li {
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 1px solid #444;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar ul li:hover {
+            background-color: #444;
+        }
+        .sidebar .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+        }
+        .content {
+            width: 100%;
+            padding: 10px 10px;
+            max-width: 100%px;
+            margin-left: px;
+            transition: margin-left 0.3s ease;
+        }
+        .card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin: 20px 0;
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .card h3 {
+            margin: 0 0 15px;
+            color: #007bff;
+        }
+        .card p {
+            margin: 10px 0;
+            color: #555;
+        }
+        .card p strong {
+            color: #333;
+        }
+        .no-results {
+            text-align: center;
+            color: #777;
+            font-size: 18px;
+            margin-top: 30px;
+        }
+        .card a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .card a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Trein Schedule</h1>
+        <span id="open-sidebar" class="menu-icon">&#9776;</span>
+    </header>
+
+    <div class="sidebar" id="sidebar">
+        <span class="close-btn" id="close-sidebar">&times;</span>
+        <h3>Companies</h3>
+        <ul id="company-list">
+            <!-- Companies will be dynamically loaded -->
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Search by destination or company">
+        </div>
+        <div id="schedule-container">
+            <!-- Schedules will be dynamically loaded -->
+        </div>
+    </div>
+
+    <script>
+        const schedules = [
+            { company: "Green Line", destination: "Dhaka to Chittagong", time: "10:00 AM", price: "1200 BDT", pickup: "Gabtoli, Dhaka", counter: "Chittagong Station", counterPhone: "+8801712345678" },
+            { company: "Shyamoli", destination: "Dhaka to Sylhet", time: "2:00 PM", price: "900 BDT", pickup: "Kallyanpur, Dhaka", counter: "Sylhet Station", counterPhone: "+8801812345678" },
+            { company: "Hanif", destination: "Dhaka to Rajshahi", time: "6:00 PM", price: "700 BDT", pickup: "Saidabad, Dhaka", counter: "Rajshahi Station", counterPhone: "+8801912345678" },
+            { company: "Ena Transport", destination: "Dhaka to Cox's Bazar", time: "9:00 PM", price: "1500 BDT", pickup: "Uttara, Dhaka", counter: "Cox's Bazar Station", counterPhone: "+8801612345678" },
+            { company: "Shohagh", destination: "Dhaka to Barisal", time: "11:00 AM", price: "800 BDT", pickup: "Mohakhali, Dhaka", counter: "Barisal Station", counterPhone: "+8801512345678" },
+            { company: "Nabil", destination: "Dhaka to Khulna", time: "8:00 AM", price: "1000 BDT", pickup: "Gabtoli, Dhaka", counter: "Khulna Station", counterPhone: "+8801412345678" },
+            { company: "BRTC", destination: "Dhaka to Rangpur", time: "5:00 PM", price: "900 BDT", pickup: "Saidabad, Dhaka", counter: "Rangpur Station", counterPhone: "+8801312345678" },
+            { company: "Desh Travels", destination: "Dhaka to Jessore", time: "1:00 PM", price: "950 BDT", pickup: "Uttara, Dhaka", counter: "Jessore Station", counterPhone: "+8801212345678" },
+            { company: "Relax Transport", destination: "Dhaka to Faridpur", time: "7:00 AM", price: "600 BDT", pickup: "Kallyanpur, Dhaka", counter: "Faridpur Station", counterPhone: "+8801712345678" },
+            { company: "Akota", destination: "Dhaka to Bogura", time: "3:00 PM", price: "750 BDT", pickup: "Gabtoli, Dhaka", counter: "Bogura Station", counterPhone: "+8801612345678" }
+        ];
+
+        const companyList = document.getElementById('company-list');
+        const scheduleContainer = document.getElementById('schedule-container');
+        const searchInput = document.getElementById('search-input');
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        // Load company list in sidebar
+        const companies = [...new Set(schedules.map(schedule => schedule.company))];
+        companies.forEach(company => {
+            const li = document.createElement('li');
+            li.textContent = company;
+            li.addEventListener('click', () => filterByCompany(company));
+            companyList.appendChild(li);
+        });
+
+        // Load schedules
+        function loadSchedules(filteredSchedules) {
+            scheduleContainer.innerHTML = '';
+            if (filteredSchedules.length === 0) {
+                scheduleContainer.innerHTML = '<p class="no-results">No results found</p>';
+                return;
+            }
+            filteredSchedules.forEach(schedule => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.innerHTML = `
+                    <h3>${schedule.company}</h3>
+                    <p><strong>Destination:</strong> ${schedule.destination}</p>
+                    <p><strong>Time:</strong> ${schedule.time}</p>
+                    <p><strong>Price:</strong> ${schedule.price}</p>
+                    <p><strong>Pickup Point:</strong> ${schedule.pickup}</p>
+                    <p><strong>Counter:</strong> ${schedule.counter}</p>
+                    <p><strong>Counter Phone:</strong> <a href="tel:${schedule.counterPhone}">${schedule.counterPhone}</a></p>
+                `;
+                scheduleContainer.appendChild(card);
+            });
+        }
+
+        // Filter schedules by search
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            const filteredSchedules = schedules.filter(schedule =>
+                schedule.destination.toLowerCase().includes(query) ||
+                schedule.company.toLowerCase().includes(query)
+            );
+            loadSchedules(filteredSchedules);
+        });
+
+        // Filter schedules by company
+        function filterByCompany(company) {
+            const filteredSchedules = schedules.filter(schedule => schedule.company === company);
+            loadSchedules(filteredSchedules);
+        }
+
+        // Open and close sidebar
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('open');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('open');
+        });
+
+        // Initial load
+        loadSchedules(schedules);
+    </script>
+</body>
+</html>
