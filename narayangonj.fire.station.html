@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>নারায়ণগঞ্জ ফায়ার স্টেশন</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .search-bar {
+      margin-bottom: 20px;
+    }
+    .search-bar input {
+      width: 300px;
+      padding: 8px;
+      font-size: 16px;
+    }
+    .profile {
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+    }
+    .profile h3 {
+      margin: 5px 0;
+    }
+    .profile p {
+      margin: 5px 0;
+    }
+    .phone-icon {
+      color: blue;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>নারায়ণগঞ্জ ফায়ার স্টেশন</h1>
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search by name, address, or phone" onkeyup="filterProfiles()">
+  </div>
+  <div id="profiles">
+    <!-- Profiles will be dynamically added here -->
+  </div>
+
+  <script>
+    const profiles = [
+      { name: "হেড জোন -১", address: "নারায়ণগঞ্জ", phone: "01901020710" },
+      { name: "হেড জোন -২", address: "নারায়ণগঞ্জ", phone: "01901020705" },
+      { name: "নারায়ণগঞ্জ ফায়ার স্টেশন l", address: "চাষারা", phone: "০1901020828" },
+      { name: "হাজীগঞ্জ ফায়ার স্টেশন", address: "হাজীগঞ্জ", phone: "০1901020830" },
+      { name: "বন্দর ফায়ার স্টেশন", address: "বন্দর ", phone: "০1901020850" },
+      { name: "নারায়ণগঞ্জ নদী ফায়ার স্টেশন", address: "শীতলক্ষা পশ্চিম", phone: "০1901020836" },
+      { name: "কাঞ্চন নদী ফায়ার স্টেশন", address: "নারায়ণগঞ্জ", phone: "০1901020854" },
+      { name: "আদমজি (EPZ)ফায়ার স্টেশন", address: "আদমজি", phone: "০1901020832" },
+      
+       { name: "আড়াইহাজার ফায়ার স্টেশন", address: "আড়াইহাজার", phone: "০1901020842" },
+       
+       { name: "ফতুল্লাহ ফায়ার স্টেশন", address: "ফতুল্লাহ", phone: "০1901020838" },
+       
+       { name: "সোনারগাঁ ফায়ার স্টেশন", address: "সোনারগাঁ ", phone: "০1901020846" },
+       
+       
+       { name: "পূর্বাচল ফায়ার স্টেশন", address: "নারায়ণগঞ্জ", phone: "০1901020858" },
+      
+      
+    ];
+
+    function loadProfiles() {
+      const profilesContainer = document.getElementById('profiles');
+      profiles.forEach(profile => {
+        const profileDiv = document.createElement('div');
+        profileDiv.classList.add('profile');
+        profileDiv.innerHTML = `
+          <h3>${profile.name}</h3>
+          <p><strong>Address:</strong> ${profile.address}</p>
+          <p><strong>Phone:</strong> <span class="phone-icon" onclick="makeCall('${profile.phone}')">${profile.phone}</span></p>
+        `;
+        profilesContainer.appendChild(profileDiv);
+      });
+    }
+
+    function makeCall(phoneNumber) {
+      window.location.href = `tel:${phoneNumber}`;
+    }
+
+    function filterProfiles() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const profilesContainer = document.getElementById('profiles');
+      profilesContainer.innerHTML = '';
+      const filteredProfiles = profiles.filter(profile => 
+        profile.name.toLowerCase().includes(query) || 
+        profile.address.toLowerCase().includes(query) || 
+        profile.phone.includes(query)
+      );
+      filteredProfiles.forEach(profile => {
+        const profileDiv = document.createElement('div');
+        profileDiv.classList.add('profile');
+        profileDiv.innerHTML = `
+          <h3>${profile.name}</h3>
+          <p><strong>Address:</strong> ${profile.address}</p>
+          <p><strong>Phone:</strong> <span class="phone-icon" onclick="makeCall('${profile.phone}')">${profile.phone}</span></p>
+        `;
+        profilesContainer.appendChild(profileDiv);
+      });
+    }
+
+    window.onload = loadProfiles;
+  </script>
+</body>
+</html>
